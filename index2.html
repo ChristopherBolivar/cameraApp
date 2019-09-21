@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SOSVISA</title>
 <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
 <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
 <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
     <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
@@ -31,6 +33,7 @@
           </ons-toolbar>
           <ons-tabbar swipeable id="appTabbar" position="auto">
             <ons-tab label="Home" icon="ion-home" page="home.html" active></ons-tab>
+            <ons-tab id="triggerCam" label="camera" icon="ion-camera" page="cam.html"></ons-tab>
             <ons-tab label="Forms" icon="ion-edit" page="forms.html"></ons-tab>
             <ons-tab label="Animations" icon="ion-film-marker" page="animations.html"></ons-tab>
           </ons-tabbar>
@@ -177,22 +180,6 @@
           <ons-card onclick="fn.pushPage({'id': 'dialogs.html', 'title': 'Dialogs'})">
             <div class="title">Dialogs</div>
             <div class="content">Components and utility methods to display many types of dialogs.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'buttons.html', 'title': 'Buttons'})">
-            <div class="title">Buttons</div>
-            <div class="content">Different styles for buttons, floating action buttons and speed dials.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'carousel.html', 'title': 'Carousel'})">
-            <div class="title">Carousel</div>
-            <div class="content">Customizable carousel that can be optionally fullscreen.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'infiniteScroll.html', 'title': 'Infinite Scroll'})">
-            <div class="title">Infinite Scroll</div>
-            <div class="content">Two types of infinite lists: "Load More" and "Lazy Repeat".</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'progress.html', 'title': 'Progress'})">
-            <div class="title">Progress</div>
-            <div class="content">Linear progress, circular progress and spinners.</div>
           </ons-card>
       
           <style>
@@ -431,6 +418,44 @@
           </style>
         </ons-page>
       </template>
+
+      <template id="cam.html">
+        <ons-page id="camera">     
+            <canvas id="camera--sensor"></canvas>        <!-- Camera view -->
+            <video id="camera--view" autoplay playsinline></video>        <!-- Camera output -->
+            <img src="//:0" alt="" id="camera--output">        <!-- Camera trigger -->
+            <button id="camera--trigger">Take a picture</button>     <!-- Reference to your JavaScript file -->
+         <script>
+                      // Set constraints for the video stream
+            var constraints = { video: { facingMode: "user" }, audio: false };// Define constants
+            const cameraButton = document.querySelector('#triggerCam')
+            const cameraView = document.querySelector("#camera--view"),
+                cameraOutput = document.querySelector("#camera--output"),
+                cameraSensor = document.querySelector("#camera--sensor"),
+                cameraTrigger = document.querySelector("#camera--trigger")// Access the device camera and stream to cameraView
+                cameraButton.onclick = function() {
+                navigator.mediaDevices
+                    .getUserMedia(constraints)
+                    .then(function(stream) {
+                    track = stream.getTracks()[0];
+                    cameraView.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error("Oops. Something is broken.", error);
+                });
+            }// Take a picture when cameraTrigger is tapped
+            cameraTrigger.onclick = function() {
+                cameraSensor.width = cameraView.videoWidth;
+                cameraSensor.height = cameraView.videoHeight;
+                cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
+                cameraOutput.src = cameraSensor.toDataURL("image/webp");
+                cameraOutput.classList.add("taken");
+             };// Start the video stream when the window loads
+            // window.addEventListener("load", cameraStart, false);
+         </script> 
+           
+        </ons-page>
+      </template>
       
       <template id="animations.html">
         <ons-page>
@@ -472,6 +497,7 @@
             </div>
             <div class="center"></div>
           </ons-toolbar>
+          
       
           <ons-pull-hook id="pull-hook" threshold-height="120px">
             <ons-icon id="pull-hook-icon" size="22px" class="pull-hook-content" icon="fa-arrow-down"></ons-icon>
@@ -1147,6 +1173,6 @@
           border-left: 1px solid #bbb;
         }
       </style>
-    <script src="script.js"></script>  
+       <script src="script.js"></script> 
 </body>
 </html>
