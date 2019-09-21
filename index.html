@@ -23,19 +23,9 @@
       
       <template id="tabbar.html">
         <ons-page id="tabbar-page">
-          <ons-toolbar>
-            <div class="center">Home</div>
-            <div class="right">
-              <ons-toolbar-button onclick="fn.toggleMenu()">
-                <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-              </ons-toolbar-button>
-            </div>
-          </ons-toolbar>
           <ons-tabbar swipeable id="appTabbar" position="auto">
             <ons-tab label="Home" icon="ion-home" page="home.html" active></ons-tab>
             <ons-tab id="triggerCam" label="camera" icon="ion-camera" page="cam.html"></ons-tab>
-            <ons-tab label="Forms" icon="ion-edit" page="forms.html"></ons-tab>
-            <ons-tab label="Animations" icon="ion-film-marker" page="animations.html"></ons-tab>
           </ons-tabbar>
       
           <script>
@@ -169,19 +159,60 @@
       
       <template id="home.html">
         <ons-page>
-          <p class="intro">
-            This is a kitchen sink example that shows off the components of Onsen UI.<br><br>
-          </p>
-      
-          <ons-card onclick="fn.pushPage({'id': 'pullHook.html', 'title': 'PullHook'})">
-            <div class="title">Pull Hook</div>
-            <div class="content">Simple "pull to refresh" functionality to update data.</div>
-          </ons-card>
-          <ons-card onclick="fn.pushPage({'id': 'dialogs.html', 'title': 'Dialogs'})">
-            <div class="title">Dialogs</div>
-            <div class="content">Components and utility methods to display many types of dialogs.</div>
-          </ons-card>
-      
+          <div id="intro-page">
+             <p class="intro">
+                    <script>
+                            var showTemplateDialog = function() {
+                              var dialog = document.getElementById('my-dialog');
+  
+                              if (dialog) {
+                                  dialog.show();
+                              } else {
+                                  ons.createElement('dialog.html', { append: true })
+                                  .then(function(dialog) {
+                                      dialog.show();
+                                  });
+                              }
+                              };
+  
+                              var hideDialog = function(id) {
+                              document
+                                  .getElementById(id)
+                                  .hide();
+                              };
+                        </script>
+               <h1>SOSVisa</h1>
+               <p>The app for natural disaster victims seeking temporary entry to the safey of the U.S.A </p>
+              
+                    <ons-button onclick="showTemplateDialog()">Login</ons-button>
+                 
+                  
+                  <template id="dialog.html">
+                    <ons-dialog id="my-dialog">
+                      <div style="text-align: center; padding: 10px;">
+                            <p>
+                                    <ons-input id="username" placeholder="Username" modifier="underbar"></ons-input>
+                                  </p>
+                              
+                                  <p>
+                                    <ons-input
+                                      id="password"
+                                      placeholder="Password"
+                                      type="password"
+                                      modifier="underbar"
+                                    >
+                                    </ons-input>
+                        <p>
+                          <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+                        </p>
+                      </div>
+                    
+                    </ons-dialog>
+                  </template>
+               <ons-button modifier="material--flat">Sign-Up</ons-button>
+             </p>
+          </div>
+        
           <style>
             .intro {
               text-align: center;
@@ -202,222 +233,6 @@
         </ons-page>
       </template>
       
-      <template id="forms.html">
-        <ons-page id="forms-page">
-          <ons-list>
-            <ons-list-header>Text input</ons-list-header>
-            <ons-list-item class="input-items">
-              <div class="left">
-                <ons-icon icon="md-face" class="list-item__icon"></ons-icon>
-              </div>
-              <label class="center">
-              <ons-input id="name-input" float maxlength="20" placeholder="Name"></ons-input>
-            </label>
-            </ons-list-item>
-            <ons-list-item class="input-items">
-              <div class="left">
-                <ons-icon icon="fa-question-circle-o" class="list-item__icon"></ons-icon>
-              </div>
-              <label class="center">
-              <ons-search-input id="search-input" maxlength="20" placeholder="Search"></ons-search-input>
-            </label>
-            </ons-list-item>
-            <ons-list-item>
-              <div class="right right-label">
-                <span id="name-display">Hello anonymous!</span>
-                <ons-icon icon="fa-hand-spock-o" size="lg" class="right-icon"></ons-icon>
-              </div>
-            </ons-list-item>
-      
-            <ons-list-header>Switches</ons-list-header>
-            <ons-list-item>
-              <label class="center" for="switch1">
-                Switch<span id="switch-status">&nbsp;(on)</span>
-              </label>
-              <div class="right">
-                <ons-switch id="model-switch" input-id="switch1" checked="true"></ons-switch>
-              </div>
-            </ons-list-item>
-            <ons-list-item>
-              <label id="enabled-label" class="center" for="switch2">
-                Enabled switch
-              </label>
-              <div class="right">
-                <ons-switch id="disabled-switch" input-id="switch2"></ons-switch>
-              </div>
-            </ons-list-item>
-      
-            <ons-list-header>Select</ons-list-header>
-            <ons-list-item>
-              <div class="center">
-                <ons-select id="select-input" style="width: 120px">
-                  <option value="Vue">
-                    Vue
-                  </option>
-                  <option value="React">
-                    React
-                  </option>
-                  <option value="Angular">
-                    Angular
-                  </option>
-                </ons-select>
-      
-              </div>
-              <div class="right right-label">
-                <span id="awesome-platform">Vue&nbsp;</span>is awesome!
-              </div>
-            </ons-list-item>
-      
-            <ons-list-header>Radio buttons</ons-list-header>
-            <ons-list-item tappable>
-              <label class="left">
-                <ons-radio class="radio-fruit" input-id="radio-0" value="Apples"></ons-radio>
-              </label>
-              <label for="radio-0" class="center">Apples</label>
-            </ons-list-item>
-            <ons-list-item tappable>
-              <label class="left">
-                <ons-radio class="radio-fruit" input-id="radio-1" value="Bananas" checked></ons-radio>
-              </label>
-              <label for="radio-1" class="center">Bananas</label>
-            </ons-list-item>
-            <ons-list-item tappable modifier="longdivider">
-              <label class="left">
-                <ons-radio class="radio-fruit" input-id="radio-2" value="Oranges"></ons-radio>
-              </label>
-              <label for="radio-2" class="center">Oranges</label>
-            </ons-list-item>
-            <ons-list-item>
-              <div id="fruit-love" class="center">
-                I love Bananas!
-              </div>
-            </ons-list-item>
-      
-            <ons-list-header>Checkboxes - <span id="checkboxes-header">Green,Blue</span></ons-list-header>
-            <ons-list-item tappable>
-              <label class="left">
-                <ons-checkbox class="checkbox-color" input-id="checkbox-0" value="Red"></ons-checkbox>
-              </label>
-              <label class="center" for="checkbox-0">
-                Red
-              </label>
-            </ons-list-item>
-            <ons-list-item tappable>
-              <label class="left">
-                <ons-checkbox class="checkbox-color" input-id="checkbox-1" value="Green" checked></ons-checkbox>
-              </label>
-              <label class="center" for="checkbox-1">
-                Green
-              </label>
-            </ons-list-item>
-            <ons-list-item tappable>
-              <label class="left">
-                <ons-checkbox class="checkbox-color" input-id="checkbox-2" value="Blue" checked></ons-checkbox>
-              </label>
-              <label class="center" for="checkbox-2">
-                Blue
-              </label>
-            </ons-list-item>
-      
-            <ons-list-header>Range slider</ons-list-header>
-            <ons-list-item>
-              Adjust the volume:
-              <ons-row>
-                <ons-col width="40px" style="text-align: center; line-height: 31px;">
-                  <ons-icon icon="md-volume-down"></ons-icon>
-                </ons-col>
-                <ons-col>
-                  <ons-range id="range-slider" value="25" style="width: 100%;"></ons-range>
-                </ons-col>
-                <ons-col width="40px" style="text-align: center; line-height: 31px;">
-                  <ons-icon icon="md-volume-up"></ons-icon>
-                </ons-col>
-              </ons-row>
-              Volume:<span id="volume-value">&nbsp;25</span> <span id="careful-message" style="display: none">&nbsp;(careful, that's loud)</span>
-            </ons-list-item>
-          </ons-list>
-      
-          <script>
-            ons.getScriptPage().onInit = function () {
-              if (ons.platform.isAndroid()) {
-                const inputItems = document.querySelectorAll('.input-items');
-                for (i = 0; i < inputItems.length; i++) {
-                  inputItems[i].hasAttribute('modifier') ?
-                    inputItems[i].setAttribute('modifier', inputItems[i].getAttribute('modifier') + ' nodivider') :
-                    inputItems[i].setAttribute('modifier', 'nodivider');
-                }
-              }
-              var nameInput = document.getElementById('name-input');
-              var searchInput = document.getElementById('search-input');
-              var updateInputs = function (event) {
-                nameInput.value = event.target.value;
-                searchInput.value = event.target.value;
-                document.getElementById('name-display').innerHTML = event.target.value !== '' ? `Hello ${event.target.value}!` : 'Hello anonymous!';
-              }
-              nameInput.addEventListener('input', updateInputs);
-              searchInput.addEventListener('input', updateInputs);
-              document.getElementById('model-switch').addEventListener('change', function (event) {
-                if (event.value) {
-                  document.getElementById('switch-status').innerHTML = `&nbsp;(on)`;
-                  document.getElementById('enabled-label').innerHTML = `Enabled switch`;
-                  document.getElementById('disabled-switch').disabled = false;
-                } else {
-                  document.getElementById('switch-status').innerHTML = `&nbsp;(off)`;
-                  document.getElementById('enabled-label').innerHTML = `Disabled switch`;
-                  document.getElementById('disabled-switch').disabled = true;
-                }
-              });
-              document.getElementById('select-input').addEventListener('change', function (event) {
-                document.getElementById('awesome-platform').innerHTML = `${event.target.value}&nbsp;`;
-              });
-              var currentFruitId = 'radio-1';
-              const radios = document.querySelectorAll('.radio-fruit')
-              for (var i = 0; i < radios.length; i++) {
-                var radio = radios[i];
-                radio.addEventListener('change', function (event) {
-                  if (event.target.id !== currentFruitId) {
-                    document.getElementById('fruit-love').innerHTML = `I love ${event.target.value}!`;
-                    document.getElementById(currentFruitId).checked = false;
-                    currentFruitId = event.target.id;
-                  }
-                })
-              }
-              var currentColors = ['Green', 'Blue'];
-              const checkboxes = document.querySelectorAll('.checkbox-color')
-              for (var i = 0; i < checkboxes.length; i++) {
-                var checkbox = checkboxes[i];
-                checkbox.addEventListener('change', function (event) {
-                  if (!currentColors.includes(event.target.value)) {
-                    currentColors.push(event.target.value);
-                  } else {
-                    var index = currentColors.indexOf(event.target.value);
-                    currentColors.splice(index, 1);
-                  }
-                  document.getElementById('checkboxes-header').innerHTML = currentColors;
-                })
-              }
-              document.getElementById('range-slider').addEventListener('input', function (event) {
-                document.getElementById('volume-value').innerHTML = `&nbsp;${event.target.value}`;
-                if (event.target.value > 80) {
-                  document.getElementById('careful-message').style.display = 'inline-block';
-                } else {
-                  document.getElementById('careful-message').style.display = 'none';
-                }
-              })
-            }
-          </script>
-      
-          <style>
-            .right-icon {
-              margin-left: 10px;
-            }
-      
-            .right-label {
-              color: #666;
-            }
-          </style>
-        </ons-page>
-      </template>
 
       <template id="cam.html">
         <ons-page id="camera">     
@@ -450,142 +265,17 @@
                 cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
                 cameraOutput.src = cameraSensor.toDataURL("image/webp");
                 cameraOutput.classList.add("taken");
-             };// Start the video stream when the window loads
-            // window.addEventListener("load", cameraStart, false);
+                var dataURL = cameraSensor.toDataURL('png');
+                console.log(dataURL)
+             };
          </script> 
            
         </ons-page>
+
       </template>
-      
-      <template id="animations.html">
-        <ons-page>
-          <ons-list>
-            <ons-list-header>Transitions</ons-list-header>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'none'}, 'none')">
-              none
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'default'}, 'default')">
-              default
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'slide-ios'}, 'slide-ios')">
-              slide-ios
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'slide-md'}, 'slide-md')">
-              slide-md
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'lift-ios'}, 'lift-ios')">
-              lift-ios
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'lift-md'}, 'lift-md')">
-              lift-md
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'fade-ios'}, 'fade-ios')">
-              fade-ios
-            </ons-list-item>
-            <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'fade-md'}, 'fade-md')">
-              fade-md
-            </ons-list-item>
-          </ons-list>
-        </ons-page>
-      </template>
-      
-      <template id="pullHook.html">
-        <ons-page>
-          <ons-toolbar>
-            <div class="left">
-              <ons-back-button>Home</ons-back-button>
-            </div>
-            <div class="center"></div>
-          </ons-toolbar>
-          
-      
-          <ons-pull-hook id="pull-hook" threshold-height="120px">
-            <ons-icon id="pull-hook-icon" size="22px" class="pull-hook-content" icon="fa-arrow-down"></ons-icon>
-          </ons-pull-hook>
-      
-          <ons-list id="kitten-list">
-            <ons-list-header>Pull to refresh</ons-list-header>
-          </ons-list>
-      
-          <script>
-            ons.getScriptPage().onInit = function () {
-              this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-              var pullHook = document.getElementById('pull-hook');
-              var icon = document.getElementById('pull-hook-icon');
-              pullHook.addEventListener('changestate', function (event) {
-                switch (event.state) {
-                  case 'initial':
-                    icon.setAttribute('icon', 'fa-arrow-down');
-                    icon.removeAttribute('rotate');
-                    icon.removeAttribute('spin');
-                    break;
-                  case 'preaction':
-                    icon.setAttribute('icon', 'fa-arrow-down');
-                    icon.setAttribute('rotate', '180');
-                    icon.removeAttribute('spin');
-                    break;
-                  case 'action':
-                    icon.setAttribute('icon', 'fa-spinner');
-                    icon.removeAttribute('rotate');
-                    icon.setAttribute('spin', true);
-                    break;
-                }
-              });
-              var getRandomName = function () {
-                const names = ['Oscar', 'Max', 'Tiger', 'Sam', 'Misty', 'Simba', 'Coco', 'Chloe', 'Lucy', 'Missy'];
-                return names[Math.floor(Math.random() * names.length)];
-              };
-              var getRandomUrl = function () {
-                const width = 40 + Math.floor(20 * Math.random());
-                const height = 40 + Math.floor(20 * Math.random());
-                return `https://placekitten.com/g/${width}/${height}`;
-              };
-              var getRandomKitten = function () {
-                return {
-                  name: getRandomName(),
-                  url: getRandomUrl()
-                };
-              };
-              var getRandomData = function () {
-                const data = [];
-                for (var i = 0; i < 8; i++) {
-                  data.push(getRandomKitten());
-                }
-                return data;
-              };
-              var createKitten = function (kitten) {
-                return ons.createElement(`
-                    <ons-list-item>
-                      <div class="left">
-                        <img class="list-item__thumbnail" src="${kitten.url}">
-                      </div>
-                      <div class="center">${kitten.name}</div>
-                    </ons-list-item>
-                  `
-                );
-              };
-              var kittens = getRandomData();
-              for (kitty of kittens) {
-                var kitten = createKitten(kitty);
-                document.getElementById('kitten-list').appendChild(kitten);
-              };
-              pullHook.onAction = function (done) {
-                setTimeout(function() {
-                  document.getElementById('kitten-list').appendChild(createKitten(getRandomKitten()));
-                  done();
-                }, 400);
-              }
-            };
-          </script>
-      
-          <style>
-            .pull-hook-content {
-              color: #666;
-              transition: transform .25s ease-in-out;
-            }
-          </style>
-        </ons-page>
-      </template>
+
+     
+     
       
       <template id="dialogs.html">
         <ons-page id="dialogs-page">
