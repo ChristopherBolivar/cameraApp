@@ -1,3 +1,10 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  console.log('IronGenerator JS imported successfully!');
+
+}, false);
+
 window.fn = {};
 
 window.fn.toggleMenu = function () {

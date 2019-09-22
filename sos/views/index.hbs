@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SOSVISA</title>
-<link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-<link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-<script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+<ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
         <ons-page>
           <ons-splitter id="appSplitter">
             <ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="right" collapse="" width="260px"></ons-splitter-side>
@@ -220,6 +205,9 @@
               padding: 0 20px;
               margin-top: 40px;
             }
+            #intro-page{
+              text-align: center;
+            }
       
             ons-card {
               cursor: pointer;
@@ -238,33 +226,11 @@
       <template id="cam.html">
         <ons-page id="camera">     
             <canvas id="camera--sensor"></canvas>        <!-- Camera view -->
-            <video id="camera--view" autoplay playsinline></video>        <!-- Camera output -->
-            <img src="//:0" alt="" id="camera--output">        <!-- Camera trigger -->
+            <video id="camera--view" autoplay playsinline></video> 
+            <img src="//:0" alt="" id="camera--output">        <!-- Camera output -->
             <button id="camera--trigger">Take a picture</button>     <!-- Reference to your JavaScript file -->
          <script>
-           function dataURItoBlob(dataURI) {
-    // convert base64/URLEncoded data component to raw binary data held in a string
-              var byteString;
-              if (dataURI.split(',')[0].indexOf('base64') >= 0)
-                  byteString = atob(dataURI.split(',')[1]);
-              else
-                  byteString = unescape(dataURI.split(',')[1]);
-
-              // separate out the mime component
-              var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-              // write the bytes of the string to a typed array
-              var ia = new Uint8Array(byteString.length);
-              for (var i = 0; i < byteString.length; i++) {
-                  ia[i] = byteString.charCodeAt(i);
-              }
-
-              return new Blob([ia], {type:mimeString});
-}
-
                       // Set constraints for the video stream
-            var dataURL;  
-            var blob;        
             var constraints = { video: { facingMode: "user" }, audio: false };// Define constants
             const cameraButton = document.querySelector('#triggerCam')
             const cameraView = document.querySelector("#camera--view"),
@@ -283,66 +249,33 @@
                 });
             }// Take a picture when cameraTrigger is tapped
             cameraTrigger.onclick = function() {
-                cameraSensor.width = cameraView.videoWidth;
-                cameraSensor.height = cameraView.videoHeight;
                 cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
                 cameraOutput.src = cameraSensor.toDataURL("image/webp");
                 cameraOutput.classList.add("taken");
-                dataURL = cameraSensor.toDataURL('image/jpeg');
-                blob = dataURItoBlob(dataURL);
-                var url = URL.createObjectURL(blob)
-                console.log(blob)
-
-                processImage()
+                dataURL = cameraSensor.toDataURL('png');
+                console.log(dataURL)
              };
-             function processImage() {
-  // **********************************************
-  // *** Update or verify the following values. ***
-  // **********************************************
-  let subscriptionKey = "ebba0c0814f349459ccea6339f0091e3";
-  let endpoint = 'https://shellhackssos.cognitiveservices.azure.com/'
-  if (!subscriptionKey) { throw new Error('Set your environment variables for your subscription key and endpoint.'); }
-  var uriBase = endpoint + "vision/v2.0/ocr";
-  // Request parameters.
-  var params = {
-      "language": "unk",
-      "detectOrientation": "true",
-  };
-  // Display the image.
- 
-  // Perform the REST API call.
-      $.ajax({
-          url: uriBase + "?" + $.param(params),
-          // Request headers.
-          beforeSend: function(jqXHR){
-              jqXHR.setRequestHeader("Content-Type","application/json");
-              jqXHR.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-          },
-          type: "POST",
-          // Request body.
-          data: '{"url": ' + '"' + blob + '"}',
-      })
-      .done(function(data) {
-          // Show formatted JSON on webpage.
-          $("#responseTextArea").val(JSON.stringify(data, null, 2));
-          console.log("hello")
-          console.log(data);
-          data.regions[3].lines.forEach( obj => console.log(obj.words[0].text));
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-          // Display error message.
-          var errorString = (errorThrown === "") ?
-              "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-          errorString += (jqXHR.responseText === "") ? "" :
-              (jQuery.parseJSON(jqXHR.responseText).message) ?
-                  jQuery.parseJSON(jqXHR.responseText).message :
-                  jQuery.parseJSON(jqXHR.responseText).error.message;
-          alert(errorString);
-      });
-    };
-   
          </script> 
-           
+           <style>
+                #camera--view, #camera--sensor{
+                  transform: scaleX(-1);
+                  filter: FlipH;
+                  z-index: 99;
+                }#camera--trigger{
+                  width: 200px;
+                  background-color: black;
+                  color: white;
+                  font-size: 16px;
+                  border-radius: 30px;
+                  border: none;
+                  padding: 15px 40px;
+                  text-align: center;
+                  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
+                  position: fixed;
+                  bottom: 30px;
+                  z-index: 100;
+                }
+           </style>
         </ons-page>
 
       </template>
@@ -352,6 +285,3 @@
           border-left: 1px solid #bbb;
         }
       </style>
-       <script src="script.js"></script> 
-</body>
-</html>
