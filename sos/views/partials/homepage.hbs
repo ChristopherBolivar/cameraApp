@@ -1,0 +1,78 @@
+  <template id="home.html">
+        <ons-page>
+          <div id="intro-page">
+             <p class="intro">
+                    <script>
+                            var showTemplateDialog = function() {
+                              var dialog = document.getElementById('my-dialog');
+  
+                              if (dialog) {
+                                  dialog.show();
+                              } else {
+                                  ons.createElement('dialog.html', { append: true })
+                                  .then(function(dialog) {
+                                      dialog.show();
+                                  });
+                              }
+                              };
+  
+                              var hideDialog = function(id) {
+                              document
+                                  .getElementById(id)
+                                  .hide();
+                              };
+                        </script>
+               <h1>SOSVisa</h1>
+               <p>The app for natural disaster victims seeking temporary entry to the safey of the U.S.A </p>
+              
+                    <ons-button onclick="showTemplateDialog()">Login</ons-button>
+                 
+                  
+                  <template id="dialog.html">
+                    <ons-dialog id="my-dialog">
+                      <div style="text-align: center; padding: 10px;">
+                            <p>
+                                    <ons-input id="username" placeholder="Username" modifier="underbar"></ons-input>
+                                  </p>
+                              
+                                  <p>
+                                    <ons-input
+                                      id="password"
+                                      placeholder="Password"
+                                      type="password"
+                                      modifier="underbar"
+                                    >
+                                    </ons-input>
+                        <p>
+                          <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+                        </p>
+                      </div>
+                    
+                    </ons-dialog>
+                  </template>
+               <ons-button modifier="material--flat">Sign-Up</ons-button>
+             </p>
+          </div>
+        
+          <style>
+            .intro {
+              text-align: center;
+              padding: 0 20px;
+              margin-top: 40px;
+            }
+            #intro-page{
+              text-align: center;
+            }
+      
+            ons-card {
+              cursor: pointer;
+              color: #333;
+            }
+      
+            .card__title,
+            .card--material__title {
+              font-size: 20px;
+            }
+          </style>
+        </ons-page>
+      </template>
